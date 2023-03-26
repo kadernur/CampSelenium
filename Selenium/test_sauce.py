@@ -9,20 +9,31 @@ class Test_Sauce:
         driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.maximize_window()
         driver.get("https://www.saucedemo.com/")
-        sleep(5)
+        
+        #inputlara id ile erişim
         usernameInput = driver.find_element(By.ID,"user-name")
         passwordInput = driver.find_element(By.ID,"password")
-        sleep(2)
+      
+        #input alanlarına veri gönderme
         usernameInput.send_keys("1")
         passwordInput.send_keys("1")
         sleep(2)
+        #login butonuna id ile erişim
         loginBtn = driver.find_element(By.ID,"login-button")
         sleep(2)
+        #click ile butonun tıklanma işlevi
         loginBtn.click()
+        
+        #Xpath ile mesaja erisim
         errorMessage = driver.find_element(By.XPATH, "//*[@id='login_button_container']/div/form/div[3]/h3")
+        #mesaj kontrolü
         testResult = errorMessage.text == "Epic sadface: Username and password do not match any user in this service"
+        #sonucun ekrana yazırılması
         print(f"Test Sonucu: {testResult}")
         sleep(100)
+        
+        
+ 
 
 
 
