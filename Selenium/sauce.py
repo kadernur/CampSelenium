@@ -5,13 +5,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.action_chains import ActionChains
+from constants import globalConstants
 
 class Test_Sauce:
     
     def __init__(self):
         self. driver = webdriver.Chrome(ChromeDriverManager().install())
         self.driver.maximize_window()
-        self.driver.get("https://www.saucedemo.com/")
+        self.driver.get(globalConstants.URL)
         
     #kişinin doğru giriş yapmadığı test senaryosu
     def test_invalid_login(self):
@@ -47,7 +48,7 @@ class Test_Sauce:
     
     def test_valid_login(self):
         #giriş sayfasının yenilenmesi
-        self.driver.get("https://www.saucedemo.com/")
+        self.driver.get(globalConstants.URL)
         
         # en fazla 5 saniye olacak şekilde user-name id'li elementin görünmesini bekle
         WebDriverWait(self.driver, 5).until(expected_conditions.visibility_of_element_located((By.ID, "user-name")))

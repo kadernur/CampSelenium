@@ -8,13 +8,14 @@ from selenium.webdriver.common.action_chains import ActionChains
 import pytest
 from pathlib import Path
 from datetime import date
+from constants import globalConstants
 
 class Test_SauceClass:
     
     def setup_method(self):
         self.driver=webdriver.Chrome(ChromeDriverManager().install())
         self.driver.maximize_window()
-        self.driver.get("https://www.saucedemo.com/")
+        self.driver.get(globalConstants.URL)
         
         self.folderPath=str(date.today())
         Path(self.folderPath).mkdir(exist_ok=True)
@@ -140,7 +141,7 @@ class Test_SauceClass:
        logoutBtn= self.driver.find_element(By.ID,"logout_sidebar_link")
        logoutBtn.click()
        self.driver.save_screenshot(f"{self.folderPath}/test-logout-{username}-{password}.png")
-       assert self.driver.current_url == "https://www.saucedemo.com/"
+       assert self.driver.current_url == globalConstants.URL
        
        
        

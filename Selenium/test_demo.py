@@ -8,6 +8,10 @@ from selenium.webdriver.common.action_chains import ActionChains
 import pytest
 from pathlib import Path
 from datetime import date
+import openpyxl
+from constants import globalConstants
+ 
+
 class Test_DemoClass:
     
     #her testten önce çağrılır
@@ -15,7 +19,7 @@ class Test_DemoClass:
         
         self.driver= webdriver.Chrome(ChromeDriverManager().install())
         self.driver.maximize_window()
-        self.driver.get("https://www.saucedemo.com/")
+        self.driver.get(globalConstants.URL)
         
         self.folderPath=str(date.today())
         Path(self.folderPath).mkdir(exist_ok=True)
@@ -34,7 +38,25 @@ class Test_DemoClass:
        assert text=="Hello" 
        
        
-    @pytest.mark.parametrize("username,password",[("1","1"),("kullaniciadim","sifrem")])   
+     #excel dosyasıdan veri çekme  
+    def getData():
+        
+        excelFile= openpyxl.load_workbook("data/invalid_login.xlsx")
+        selectedSheet= excelFile["Sheet1"]
+        
+        totalRows=selectedSheet.max_row
+        data=[]
+        for i in range(2,totalRows+1):
+            username=selectedSheet.cell(i,1).value
+            password=selectedSheet.cell(i,2).value
+            tupleData=(username,password)
+            data.append(tupleData)
+            
+        return data
+       
+       
+    #@pytest.mark.parametrize("username,password",[("1","1"),("kullaniciadim","sifrem")]) 
+    @pytest.mark.parametrize("username,password",getData())     
     def test_invalid_login(self,username,password):
          # en fazla 5 saniye olacak şekilde user-name id'li elementin görünmesini bekle
         self.waitForElementVisible((By.ID,"user-name"))
