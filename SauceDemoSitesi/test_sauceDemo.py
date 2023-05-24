@@ -306,6 +306,37 @@ class Test_SauceDemoClass:
         self.saveScreenShoot("test_filter_a_to_z")
         assert item_name.text == constants.AtoZItem_Name
         
+    @pytest.mark.parametrize("sort_by",[("az"),("za")])    
+    def test_Refilter(self,sort_by:str):
+         self.test_go_to_page(username="standard_user", password="secret_sauce")
+         
+         match sort_by:
+             case "az":
+                 Select(self.driver.find_element(By.CLASS_NAME,
+                                                 "product_sort_container")).select_by_index(0)
+                 
+                 items=[item.text for item in self.driver.find_elements(
+                     By.CLASS_NAME, "inventory_item_name"
+                 )]
+                 items_sorted_az=sorted(items)
+                 assert items  == items_sorted_az
+                 
+             case "za":
+                Select(self.driver.find_element(By.CLASS_NAME,
+                                                 "product_sort_container")).select_by_index(1)
+                
+                items=[item.text for item in self.driver.find_elements(
+                     By.CLASS_NAME, "inventory_item_name"
+                 )]
+                
+                items_sorted_za=sorted(items, reverse=True)
+                assert items== items_sorted_za
+
+                
+                 
+                
+        
+        
         
         
     # reset App state kontrolü
